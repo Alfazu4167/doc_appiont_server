@@ -1,0 +1,7 @@
+# Environment variables 
+.env
+.env.*
+# Vercel deployment files
+.vercel
+# dependencies
+/node_modules
