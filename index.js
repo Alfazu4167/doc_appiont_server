@@ -1,8 +1,8 @@
+const dotenv = require('dotenv')
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 8000;
 const cors = require('cors');
-const dotenv = require('dotenv')
 dotenv.config()
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = process.env.MONGO_URI;
@@ -25,17 +25,23 @@ async function run() {
 
     const db = client.db('doc-appoint');
     const doctorsCollection = db.collection('doctors')
+    const bookingCollection = db.collection('bookings')
 
     app.get('/doctors', async (req, res) => {
       const result = await doctorsCollection.find().toArray();
       res.send(result)
     })
-    app.get('/doctors/:id', async(req,res)=>{
-      const {id} = req.params;
-      
+    app.get('/doctors/:id', async (req, res) => {
+      const { id } = req.params;
+
       const result = await doctorsCollection.findOne({
         _id: new ObjectId(id)
       })
+      res.send(result)
+    });
+    app.post('/bookings', async (req, res) => {
+      const booking = req.body
+      const result = await bookingCollection.insertOne(booking);
       res.send(result)
     })
     await client.db("admin").command({ ping: 1 });
