@@ -39,6 +39,10 @@ async function run() {
       })
       res.send(result)
     });
+    app.get('/top-doctors', async (req, res) => {
+      const result = await doctorsCollection.find().sort({ rating: -1 }).limit(3).toArray()
+      res.send(result)
+    })
     app.get('/bookings/:userId', async (req, res) => {
       const { userId } = req.params;
 
