@@ -39,6 +39,23 @@ async function run() {
       })
       res.send(result)
     });
+    app.get('/bookings/:userId', async (req, res) => {
+      const { userId } = req.params;
+
+      const result = await bookingCollection.find({ userId }).toArray();
+      res.send(result)
+    })
+    app.patch('/bookings/:bookingId', async (req, res) => {
+      const { bookingId } = req.params;
+      const updatedData = req.body;
+      console.log(bookingId, updatedData);
+      const result = await bookingCollection.updateOne({
+        _id: new ObjectId(bookingId)
+      },
+        { $set: updatedData },
+      )
+      res.send(result)
+    })
     app.post('/bookings', async (req, res) => {
       const booking = req.body
       const result = await bookingCollection.insertOne(booking);
