@@ -31,6 +31,13 @@ async function run() {
       const result = await doctorsCollection.find().toArray();
       res.send(result)
     })
+    app.get('/doctors/search', async (req, res) => {
+      const nameQuery = req.query.name;
+      const result = await doctorsCollection.find({
+        name: { $regex: nameQuery, $options: 'i' }
+      }).toArray()
+      res.send(result)
+    })
     app.get('/doctors/:id', async (req, res) => {
       const { id } = req.params;
 
@@ -43,6 +50,7 @@ async function run() {
       const result = await doctorsCollection.find().sort({ rating: -1 }).limit(3).toArray()
       res.send(result)
     })
+
     app.get('/bookings/:userId', async (req, res) => {
       const { userId } = req.params;
 
